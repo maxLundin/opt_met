@@ -21,17 +21,19 @@ def dihotomi(f, left_border, right_border, eps=1e-6):
     return (left_border + right_border) / 2, iters
 
 
-def search_range_with_min(f, x0, step=0.1, eps=1e-6):
+def search_range_with_min(f, x0, step=0.1, eps=1e-6, max_iter=1e4):
     if f(x0) < f(x0 + step):
         x0 += step
         step *= -1
 
+    it = 0
     y0 = f(x0)
     x = x0 + step
 
-    while f(x) <= y0 + eps:
+    while f(x) <= y0 + eps and it < max_iter:
         step *= 2
         x += step
+        it += 1
 
     if step > 0:
         return x0, x
@@ -45,18 +47,20 @@ def calculate_step(f, x, grad):
     return arg
 
 
-def gradient_descent(f, f_grad, x0, eps=1e-12, max_iter=1e6):
+def gradient_descent(f, f_grad, x0, eps=1e-6, max_iter=1e6):
     x = x0
     it = 0
     trace = [x]
 
+    s = -f_grad(x)
+
     while True:
-        grad = -f_grad(x)
+        lamb = calculate_step(f, x, s)
+        next_x = x + lamb * s
 
-        step = calculate_step(f, x, grad)
-        next_x = x + step * grad
+        s = -f_grad(next_x) + s * (np.linalg.norm(f_grad(next_x)) / np.linalg.norm(f_grad(x))) ** 2
 
-        if abs(f(next_x) - f(x)) < eps or np.linalg.norm(grad) < eps or it >= max_iter:
+        if abs(f(next_x) - f(x)) < eps or np.linalg.norm(s) < eps or it >= max_iter:
             return x, trace
 
         trace.append(x)
