@@ -36,4 +36,4 @@ def newton(f, f_grad, f_hess, x0, eps=1e-6, max_iter=1e6):
 def analyze(f, x_border, y_border, f_grad, f_hess, x0):
     return functions.analyze(f, x_border, y_border, lambda: newton(f, f_grad, f_hess, x0))
 
-analyze(functions.f3, (-30, 30), (-30, 30), functions.f3_grad, functions.f3_hess, (-3, 3))
+# analyze(functions.f3, (-30, 30), (-30, 30), functions.f3_grad, functions.f3_hess, (-3, 3))
