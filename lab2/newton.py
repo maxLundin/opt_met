@@ -6,6 +6,12 @@ def is_pos_def(x):
     return np.all(np.linalg.eigvals(x) > 0)
 
 
+def make_pos_def(x):
+    l = np.linalg.eigvals(x)
+    mu = (-l + 1) * np.eye(x.shape[0])
+    return x + mu
+
+
 def newton(f, f_grad, f_hess, x0, eps=1e-6, max_iter=1e6):
     x = x0
     it = 0
@@ -18,6 +24,9 @@ def newton(f, f_grad, f_hess, x0, eps=1e-6, max_iter=1e6):
         if np.linalg.norm(grad) < eps or it >= max_iter:
             return x, trace
 
+        if not is_pos_def(hess):
+            hess = make_pos_def(hess)
+            
         step = grad.dot(np.linalg.inv(hess))
         print(it, x)
         x -= step
