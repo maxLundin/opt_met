@@ -9,7 +9,7 @@ systema = [
     [1, 2, 3, ">=", 3]
 ]
 
-c = [1, 2, 3, 44]
+c = [1, 2, 3]
 
 indexes = []
 syslen = systema[0].__len__() - 2
@@ -31,6 +31,8 @@ def doge(i):
 
 
 def preproc():
+    global c
+    c += [0] * len(systema)
     for i in range(len(systema)):
         systema[i] = systema[i][:-2] + [0] * len(systema) + systema[i][-2:]
 
@@ -56,6 +58,7 @@ def doit():
     print(np.array(indexes))
     postproc()
     print(np.array(systema))
+    print(np.array(c))
 
     ih_govno_funkcia(systema, indexes, c)
 
