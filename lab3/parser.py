@@ -1,15 +1,32 @@
 import numpy as np
+from simplex import *
+
 
 def ih_govno_funkcia(a, ind, c):
-    pass
+    print()
+    print(find_min(a, ind, c))
+
+
+# systema = [
+#     [1, 2, "<=", 7],
+#     [2, 1, "<=", 8],
+#     [0, 1, "<=", 3],
+#     [1, 0, ">=", 0],
+#     [0, 1, ">=", 0],
+# ]
+#
+# c = [3, 2]
 
 systema = [
-    [1, 2, 3, "<=", 3],
-    [1, 2, 3, "<=", 3],
-    [1, 2, 3, ">=", 3]
+    [2, -1, 1, 0, "==", 1],
+    [-1, 2, 0, 1, "==", 1],
+    [1, 0, 0, 0, ">=", 0],
+    [0, 1, 0, 0, ">=", 0],
+    [0, 0, 1, 0, ">=", 0],
+    [0, 0, 0, 1, ">=", 0],
 ]
 
-c = [1, 2, 3]
+c = [1, 1, -2, -3]
 
 indexes = []
 syslen = systema[0].__len__() - 2
@@ -36,10 +53,10 @@ def preproc():
     for i in range(len(systema)):
         systema[i] = systema[i][:-2] + [0] * len(systema) + systema[i][-2:]
 
+
 def postproc():
     for i in range(len(systema)):
         systema[i] = systema[i][:-2] + systema[i][-1:]
-
 
 
 def doit():
@@ -60,7 +77,7 @@ def doit():
     print(np.array(systema))
     print(np.array(c))
 
-    ih_govno_funkcia(systema, indexes, c)
+    ih_govno_funkcia(np.array(systema), indexes, c)
 
 
 if __name__ == '__main__':
