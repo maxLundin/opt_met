@@ -1,57 +1,68 @@
 import numpy as np
-from copy import deepcopy
+
+M = 1e10
+EPS = 1e-10
 
 
-def find_min(matrix, pos_ind, f):
-    f = np.array(f.copy() + [0]).astype(dtype=float)
-    matrix = np.array(matrix.copy()).astype(dtype=float)
+def find_min(A, b, f):
+    f = -np.array(f.copy()).astype(dtype=float)
+    A = np.array(A.copy()).astype(dtype=float)
+    b = np.array(b.copy()).astype(dtype=float)
 
-    # print(matrix)
+    A = np.hstack((A, np.eye(len(b))))
+    f = np.hstack((f, np.repeat(-M, len(b))))
 
-    max_el_col = np.argmax(f[:-1])
-    basis = [-1 for _ in range(len(matrix))]
+    for i in range(len(b)):
+        if b[i] < 0:
+            A[i] = -A[i]
+            b[i] = -b[i]
 
-    while f[max_el_col] > 0:
+    for i in range(len(b)):
+        f = f + A[i] * M
 
-        min_row_b = -1
+    col = np.argmax(f)
+    basis = np.arange(len(A)) + len(A[0]) - len(b)
+
+    while f[col] > EPS:
+
+        row = -1
         min_b = np.inf
 
-        for i in range(len(matrix)):
-            if matrix[i, max_el_col] > 0:
-                b_res = matrix[i, -1] / matrix[i, max_el_col]
+        for i in range(len(A)):
+            if A[i, col] > EPS:
+                b_res = b[i] / A[i, col]
 
                 if b_res < min_b:
-                    min_row_b = i
+                    row = i
                     min_b = b_res
 
-        if min_row_b == -1:
+        if row == -1:
             print("gg")
             return
 
-        resolve_el = matrix[min_row_b, max_el_col]
-        basis[min_row_b] = max_el_col
+        resolve_el = A[row, col]
+        basis[row] = col
 
-        for i in range(len(matrix)):
-            if i == min_row_b:
+        for i in range(len(A)):
+            if i == row:
                 continue
             else:
-                if matrix[i, max_el_col] != 0:
-                    k = matrix[i, max_el_col] / resolve_el
-                    matrix[i] = matrix[i] - matrix[min_row_b] * k
+                if A[i, col] != 0:
+                    k = A[i, col] / resolve_el
+                    A[i] = A[i] - A[row] * k
+                    b[i] = b[i] - b[row] * k
 
-        k = f[max_el_col] / resolve_el
-        f = f - matrix[min_row_b, :] * k
-        matrix[min_row_b] = matrix[min_row_b] / resolve_el
+        k = f[col] / resolve_el
+        f = f - A[row, :] * k
+        A[row] = A[row] / resolve_el
+        b[row] = b[row] / resolve_el
 
-        max_el_col = np.argmax(f[:-1])
+        col = np.argmax(f)
 
-    res = [0 for _ in range(len(basis))]
+    res = [0 for _ in range(len(A[0]) - len(b))]
     for i in range(len(basis)):
-        if basis[i] != -1:
-            res[basis[i]] = matrix[i, -1] / matrix[i, basis[i]]
+        if basis[i] >= len(A[0]) - len(b):
+            return
+        res[basis[i]] = b[i] / A[i, basis[i]]
 
-    # print(res)
-    # print(f)
-    # print(basis)
-    # print(matrix)
     return res
