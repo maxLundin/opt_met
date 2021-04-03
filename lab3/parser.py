@@ -1,10 +1,9 @@
-import numpy as np
 from simplex import *
 
 
-def ih_govno_funkcia(a, ind, c):
+def ih_govno_funkcia(A, c):
     print()
-    print(find_min(a[:, :-1], a[:, -1], c))
+    print(find_min(A[:, :-1], A[:, -1], c))
 
 
 systema = [
@@ -67,7 +66,7 @@ def doit():
     print(np.array(systema))
     print(np.array(c))
 
-    ih_govno_funkcia(np.array(systema), indexes, c)
+    ih_govno_funkcia(np.array(systema), c)
 
 
 if __name__ == '__main__':
