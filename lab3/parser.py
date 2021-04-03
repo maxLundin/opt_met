@@ -60,11 +60,11 @@ def doit():
         else:
             print("operator govno")
             return
-    print(np.array(systema))
-    print(np.array(indexes))
+    # print(np.array(systema))
+    # print(np.array(indexes))
     postproc()
-    print(np.array(systema))
-    print(np.array(c))
+    # print(np.array(systema))
+    # print(np.array(c))
 
     ih_govno_funkcia(np.array(systema), c)
 
