@@ -1,7 +1,7 @@
 import numpy as np
 
-M = 1e10
-EPS = 1e-10
+M = 1e9
+EPS = 1e-12
 
 
 def find_min(A, b, f):
@@ -37,7 +37,7 @@ def find_min(A, b, f):
                     min_b = b_res
 
         if row == -1:
-            print("gg")
+            print("Can't find resolve element")
             return
 
         resolve_el = A[row, col]
@@ -62,6 +62,7 @@ def find_min(A, b, f):
     res = [0 for _ in range(len(A[0]) - len(b))]
     for i in range(len(basis)):
         if basis[i] >= len(A[0]) - len(b):
+            print("Dummy variable in the basis")
             return
         res[basis[i]] = b[i] / A[i, basis[i]]
 

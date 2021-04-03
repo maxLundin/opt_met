@@ -7,16 +7,6 @@ def ih_govno_funkcia(a, ind, c):
     print(find_min(a[:, :-1], a[:, -1], c))
 
 
-# systema = [
-#     [1, 2, "<=", 7],
-#     [2, 1, "<=", 8],
-#     [0, 1, "<=", 3],
-#     [1, 0, ">=", 0],
-#     [0, 1, ">=", 0],
-# ]
-#
-# c = [3, 2]
-
 systema = [
     [3, 1, -1, 1, "==", 4],
     [5, 1, 1, -1, "==", 4],
@@ -27,17 +17,6 @@ systema = [
 ]
 
 c = [-6, -1, -4, 5]
-
-# systema = [
-#     [2, -1, 1, 0, "==", 1],
-#     [-1, 2, 0, 1, "==", 1],
-#     [1, 0, 0, 0, ">=", 0],
-#     [0, 1, 0, 0, ">=", 0],
-#     [0, 0, 1, 0, ">=", 0],
-#     [0, 0, 0, 1, ">=", 0],
-# ]
-#
-# c = [1, 1, -2, -3]
 
 indexes = []
 syslen = systema[0].__len__() - 2
@@ -73,11 +52,11 @@ def postproc():
 def doit():
     preproc()
     for i in range(len(systema)):
-        if (systema[i][-2] == "<="):
+        if systema[i][-2] == "<=":
             dole(i)
-        elif (systema[i][-2] == ">="):
+        elif systema[i][-2] == ">=":
             doge(i)
-        elif (systema[i][-2] == "=="):
+        elif systema[i][-2] == "==":
             pass
         else:
             print("operator govno")
